@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+/* Page Styling */
+body {
+  margin: 0;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.center {
+  text-align: center;
+}
+
+/* Navigation Bar*/
+.topnavigationbar {
+  overflow: hidden;
+  background-color: #0C0B13;
+}
+
+.topnavigationbar a {
+  float: left;
+  color: #fe9800;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnavigationbar a:hover {
+  background-color: #ffffff;
+  color: #fe9800;
+}
+
+
+.topnavigationbar a.split {
+  float: right;
+  background-color: #fe9800;
+  color: #0C0B13;
+}
+
+/* Sign Up / Sign In Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+  }
+
+  .modal-header {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #ff9900;
+  }
+
+  .modal-body input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+
+  .modal-footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .modal-footer button {
+    padding: 10px 20px;
+    background-color: #ff9900;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .modal-footer button:hover {
+    background-color: #ff9900;
+  }
+
+  .redirect-link {
+    color: #ff9900;
+    text-decoration: none;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .redirect-link:hover {
+    text-decoration: underline;
+  }
+
+  .message-modal {
+    display: none;
+    position: fixed;
+    z-index: 2;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 2px solid #ff9900;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    text-align: center;
+  }
+
+  .message-modal button {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background-color: #ff9900;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+  }
+
+ /* After Sign in Drop Down Menu*/   
+  #dropdownMenu {
+    position: absolute;
+    right: 16px;
+    top: 50px;
+    background-color: #0C0B13;
+    color: #ff9900;
+    border: 1px solid #ff9900;
+    display: none;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  #dropdownMenu a {
+    text-decoration: none;
+    color: #ff9900;
+    padding: 5px 10px;
+  }
+
+  #dropdownMenu a:hover {
+    background-color: #ff9900;
+    color: white;
+  }
+
+/* Footer*/
+.BottomPage {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #000000;
+  color: #fe9800;
+  text-align: center;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-size: 17px;
+}
+
+/* Quiz Boxes*/
+.quiz-container {
+  margin: 20px;
+}
+
+.question-block {
+  margin-bottom: 30px;
+  padding: 20px;
+  border: 1px solid #000000;
+  background-color: #000000;
+  color: #fe9800;
+}
+
+.question {
+  font-size: 20px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 20%;
+  height: 20%;
+}
+
+.image2 {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 30%;
+  height: 30%;
+}
+
+/* Answer Block Replacment*/
+.answer {
+  display: block;
+  background-color: #000000;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #fe9800;
+  cursor: pointer;
+  text-align: left;
+}
+
+.answer:hover {
+  background-color: #e0e0e0;
+}
+
+.correct {
+  background-color: #28a745 !important;
+  color: #ffffff;
+}
+
+.wrong {
+  background-color: #dc3545 !important;
+  color: #ffffff;
+}
+
+.feedback {
+  font-size: 24px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.correct-text {
+  color: #fe9800;
+}
+
+.wrong-text {
+  color: #dc3545;
+}
+
+/* Introduction Section*/
+.header-section {
+  background-color: #ffffff;
+  padding: 10px;
+  text-align: center;
+  font-size: 30px;
+  color: #fe9800;
+}
+
+.text-area {
+  padding: 10px;
+  font-size: 18px;
+  line-height: 1.5;
+  background-color: #ffffff;
+  text-align: center;
+}
+
+/* Bottom Results Box (Time & Score)*/
+.results-container {
+  text-align: center;
+  font-size: 24px;
+  color: #fe9800;
+  margin: 50px auto;
+  display: none;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+}
+
+.results-container p {
+  margin: 10px 0;
+}
+
+</style>
+</head>
+<body style="background-color:#ffffff;">
+
+<!-- Navigation Bar -->
+<div class="topnavigationbar">
+  <a class="active" href="Homepage.html">Home</a>
+  <a href="QuizPage.html">Quiz's</a>
+  <a href="#" class="split" id="signupBtn">Sign Up</a>
+  <a href="#" class="split" id="userMenu" style="display: none;">
+    <span id="usernameDisplay"></span>
+  </a>
+  <div id="dropdownMenu">
+    <a href="#" onclick="showAccountInfo()">Account</a>
+    <a href="#" onclick="signOut()">Sign Out</a>
+  </div>
+</div>
+
+<div class="header-section">
+  <h1>Movie's Quiz</h1>
+</div>
+
+<div class="text-area">
+  <p style="color:#fe9800;">Welcome to the DC Universe Quiz! Test your knowledge on famous heroes, villains, and epic stories from the world of DC Comics. Whether you’re a fan of Superman, Batman, Wonder Woman, or their many adventures, this quiz will challenge what you know. Are you ready to show off your DC expertise? Let’s begin!</p>
+</div>
+
+<div class="quiz-container" id="quiz-container"></div>
+
+<div class="results-container" id="results-container">
+  <!-- This section is dynamically updated by JavaScript -->
+</div>
+
+<!-- Sign In/Sing Up Models -->
+<div id="signupModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">Sign Up</div>
+    <div class="modal-body">
+      <label for="signup-username">Username</label>
+      <input type="text" id="signup-username" placeholder="Enter your username">
+      <span id="signup-username-error" class="error-message"></span>
+      <label for="signup-password">Password</label>
+      <input type="password" id="signup-password" placeholder="Enter your password">
+      <span id="signup-password-error" class="error-message"></span>
+      <label for="confirm-password">Confirm Password</label>
+      <input type="password" id="confirm-password" placeholder="Confirm your password">
+      <span id="confirm-password-error" class="error-message"></span>
+    </div>
+    <div class="modal-footer">
+      <button onclick="handleSignUp()">Sign Up</button>
+      <a href="#" class="redirect-link" onclick="showSignIn()">Already have an account? Sign In</a>
+    </div>
+  </div>
+</div>
+
+<div id="signinModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">Sign In</div>
+    <div class="modal-body">
+      <label for="signin-username">Username</label>
+      <input type="text" id="signin-username" placeholder="Enter your username">
+      <span id="signin-username-error" class="error-message"></span>
+      <label for="signin-password">Password</label>
+      <input type="password" id="signin-password" placeholder="Enter your password">
+      <span id="signin-password-error" class="error-message"></span>
+    </div>
+    <div class="modal-footer">
+      <button onclick="handleSignIn()">Sign In</button>
+      <a href="#" class="redirect-link" onclick="showSignUp()">Don't have an account? Sign Up</a>
+    </div>
+  </div>
+</div>
+
+<!-- Account Modal -->
+<div id="accountModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">Account Information</div>
+    <div class="modal-body">
+      <p><strong>Username:</strong> <span id="accountUsername"></span></p>
+      <p><strong>Password:</strong></p>
+      <input type="password" id="accountPassword" readonly>
+    </div>
+    <div class="modal-footer">
+      <button onclick="closeModal('accountModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<div id="messageModal" class="message-modal">
+  <div id="messageText"></div>
+  <button id="messageOkButton" onclick="closeMessage()" style="display: none;">OK</button>
+</div>
+
+<!-- Footer -->
+<div class="BottomPage">
+  <p style="color: #ff9900;">A Zain Project</p>
+</div>
+
+<script>
+  // Question bank
+  const questions = [
+  {
+    question: "What movie features the line 'I'll be back'?",
+    answers: [
+      { text: "Die Hard", correct: false },
+      { text: "The Terminator", correct: true },
+      { text: "Predator", correct: false },
+      { text: "RoboCop", correct: false }
+    ]
+  },
+  {
+    question: "Who directed 'Inception'?",
+    answers: [
+      { text: "Quentin Tarantino", correct: false },
+      { text: "Steven Spielberg", correct: false },
+      { text: "Christopher Nolan", correct: true },
+      { text: "Martin Scorsese", correct: false }
+    ]
+  },
+  {
+    question: "What is the highest-grossing film of all time (as of 2024)?",
+    answers: [
+      { text: "Avatar", correct: true },
+      { text: "Avengers: Endgame", correct: false },
+      { text: "Titanic", correct: false },
+      { text: "Star Wars: The Force Awakens", correct: false }
+    ]
+  },
+  {
+    question: "Who played Jack in 'Titanic'?",
+    answers: [
+      { text: "Tom Cruise", correct: false },
+      { text: "Brad Pitt", correct: false },
+      { text: "Leonardo DiCaprio", correct: true },
+      { text: "Johnny Depp", correct: false }
+    ]
+  },
+  {
+    question: "What year was the first 'Star Wars' movie released?",
+    answers: [
+      { text: "1975", correct: false },
+      { text: "1977", correct: true },
+      { text: "1980", correct: false },
+      { text: "1983", correct: false }
+    ]
+  },
+  {
+    question: "Which movie features the song 'My Heart Will Go On'?",
+    answers: [
+      { text: "The Bodyguard", correct: false },
+      { text: "Titanic", correct: true },
+      { text: "Dirty Dancing", correct: false },
+      { text: "Moulin Rouge!", correct: false }
+    ]
+  },
+  {
+    question: "Which actor played Forrest Gump?",
+    answers: [
+      { text: "Tom Cruise", correct: false },
+      { text: "Tom Hanks", correct: true },
+      { text: "Robin Williams", correct: false },
+      { text: "John Travolta", correct: false }
+    ]
+  },
+  {
+    question: "Which movie franchise features the character Indiana Jones?",
+    answers: [
+      { text: "Jurassic Park", correct: false },
+      { text: "Indiana Jones", correct: true },
+      { text: "The Mummy", correct: false },
+      { text: "National Treasure", correct: false }
+    ]
+  },
+  {
+    question: "What is the name of the hobbit played by Elijah Wood in 'The Lord of the Rings'?",
+    answers: [
+      { text: "Bilbo Baggins", correct: false },
+      { text: "Frodo Baggins", correct: true },
+      { text: "Samwise Gamgee", correct: false },
+      { text: "Pippin Took", correct: false }
+    ]
+  },
+  {
+    question: "Which Marvel movie was the first to feature Nick Fury?",
+    answers: [
+      { text: "Iron Man", correct: true },
+      { text: "Captain America: The First Avenger", correct: false },
+      { text: "Thor", correct: false },
+      { text: "The Avengers", correct: false }
+    ]
+  },
+  {
+    question: "What movie features the iconic line 'You can't handle the truth'?",
+    answers: [
+      { text: "A Few Good Men", correct: true },
+      { text: "Goodfellas", correct: false },
+      { text: "The Godfather", correct: false },
+      { text: "Pulp Fiction", correct: false }
+    ]
+  },
+  {
+    question: "Who directed 'Pulp Fiction'?",
+    answers: [
+      { text: "Martin Scorsese", correct: false },
+      { text: "Quentin Tarantino", correct: true },
+      { text: "Ridley Scott", correct: false },
+      { text: "Christopher Nolan", correct: false }
+    ]
+  },
+  {
+    question: "Which movie is about a robot named WALL-E?",
+    answers: [
+      { text: "Robots", correct: false },
+      { text: "WALL-E", correct: true },
+      { text: "Big Hero 6", correct: false },
+      { text: "Astro Boy", correct: false }
+    ]
+  },
+  {
+    question: "What movie is the song 'Let It Go' from?",
+    answers: [
+      { text: "Tangled", correct: false },
+      { text: "Frozen", correct: true },
+      { text: "Moana", correct: false },
+      { text: "The Little Mermaid", correct: false }
+    ]
+  },
+  {
+    question: "Who played the Joker in 'The Dark Knight'?",
+    answers: [
+      { text: "Jack Nicholson", correct: false },
+      { text: "Heath Ledger", correct: true },
+      { text: "Jared Leto", correct: false },
+      { text: "Joaquin Phoenix", correct: false }
+    ]
+  },
+  {
+    question: "Which movie won the first-ever Academy Award for Best Picture?",
+    answers: [
+      { text: "Wings", correct: true },
+      { text: "The Jazz Singer", correct: false },
+      { text: "Gone with the Wind", correct: false },
+      { text: "Citizen Kane", correct: false }
+    ]
+  },
+  {
+    question: "What is the highest-grossing animated movie of all time?",
+    answers: [
+      { text: "The Lion King (2019)", correct: true },
+      { text: "Frozen II", correct: false },
+      { text: "Toy Story 4", correct: false },
+      { text: "Zootopia", correct: false }
+    ]
+  },
+  {
+    question: "Who directed the movie 'Jaws'?",
+    answers: [
+      { text: "George Lucas", correct: false },
+      { text: "Steven Spielberg", correct: true },
+      { text: "James Cameron", correct: false },
+      { text: "Ridley Scott", correct: false }
+    ]
+  },
+  {
+    question: "In which movie does Tom Hanks voice a cowboy doll?",
+    answers: [
+      { text: "Toy Story", correct: true },
+      { text: "The Incredibles", correct: false },
+      { text: "Monsters, Inc.", correct: false },
+      { text: "Finding Nemo", correct: false }
+    ]
+  },
+  {
+    question: "What movie features the line 'Here's looking at you, kid'?",
+    answers: [
+      { text: "Gone with the Wind", correct: false },
+      { text: "Casablanca", correct: true },
+      { text: "The Maltese Falcon", correct: false },
+      { text: "Citizen Kane", correct: false }
+    ]
+  },
+  {
+    question: "Who directed the movie 'The Godfather'?",
+    answers: [
+      { text: "Francis Ford Coppola", correct: true },
+      { text: "Martin Scorsese", correct: false },
+      { text: "Stanley Kubrick", correct: false },
+      { text: "Sidney Lumet", correct: false }
+    ]
+  },
+  {
+    question: "What is the name of the 2020 Pixar movie about jazz?",
+    answers: [
+      { text: "Soul", correct: true },
+      { text: "Inside Out", correct: false },
+      { text: "Coco", correct: false },
+      { text: "Onward", correct: false }
+    ]
+  },
+  {
+    question: "Which actor played Deadpool?",
+    answers: [
+      { text: "Ryan Reynolds", correct: true },
+      { text: "Hugh Jackman", correct: false },
+      { text: "Chris Evans", correct: false },
+      { text: "Chris Hemsworth", correct: false }
+    ]
+  },
+  {
+    question: "What year was 'The Matrix' released?",
+    answers: [
+      { text: "1997", correct: false },
+      { text: "1999", correct: true },
+      { text: "2000", correct: false },
+      { text: "2001", correct: false }
+    ]
+  },
+  {
+    question: "Which movie features a ship called the Black Pearl?",
+    answers: [
+      { text: "Treasure Island", correct: false },
+      { text: "Pirates of the Caribbean", correct: true },
+      { text: "Moby Dick", correct: false },
+      { text: "Master and Commander", correct: false }
+    ]
+  },
+  {
+    question: "Who played Wolverine in the X-Men movies?",
+    answers: [
+      { text: "Hugh Jackman", correct: true },
+      { text: "Ryan Reynolds", correct: false },
+      { text: "Patrick Stewart", correct: false },
+      { text: "Ian McKellen", correct: false }
+    ]
+  },
+  {
+    question: "What movie features the character Buzz Lightyear?",
+    answers: [
+      { text: "Monsters, Inc.", correct: false },
+      { text: "Toy Story", correct: true },
+      { text: "Cars", correct: false },
+      { text: "Finding Nemo", correct: false }
+    ]
+  },
+  {
+    question: "What is the name of the spell used to bring brooms to the caster in Harry Potter?",
+    answers: [
+      { text: "Accio", correct: true },
+      { text: "Expelliarmus", correct: false },
+      { text: "Wingardium Leviosa", correct: false },
+      { text: "Lumos", correct: false }
+    ]
+  },
+  {
+    question: "Who played the titular character in 'Forrest Gump'?",
+    answers: [
+      { text: "Tom Hanks", correct: true },
+      { text: "Robin Williams", correct: false },
+      { text: "Harrison Ford", correct: false },
+      { text: "Brad Pitt", correct: false }
+    ]
+  }
+];
+  
+  // Timer
+    let timerInterval;
+    let timeElapsed = 0;
+    let score = 0;
+    let questionsAnswered = 0;
+  
+  // Shuffle questions
+    function shuffleArray(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+  
+  // Starts The Timer
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        timeElapsed++;
+      }, 1000);
+    }
+  
+  // Stops The Timer
+    function stopTimer() {
+      clearInterval(timerInterval);
+    }
+  
+  // Renders the questions from the array
+    function renderQuiz() {
+      const quizContainer = document.getElementById("quiz-container");
+      quizContainer.innerHTML = ""; // Clear existing questions
+  
+      const selectedQuestions = shuffleArray([...questions]).slice(0, 10); // Pick 10 random questions from the array
+  
+      selectedQuestions.forEach((questionObj, index) => {
+        const questionBlock = document.createElement("div");
+        questionBlock.className = "question-block";
+  
+        // Question text
+        const questionText = document.createElement("div");
+        questionText.className = "question";
+        questionText.innerText = `Question ${index + 1}: ${questionObj.question}`;
+        questionBlock.appendChild(questionText);
+  
+        // Answers
+        questionObj.answers.forEach(answer => {
+          const answerDiv = document.createElement("div");
+          answerDiv.className = "answer";
+          answerDiv.innerText = answer.text;
+          answerDiv.onclick = () => {
+            if (!timerInterval) startTimer();
+            questionsAnswered++;
+            if (answer.correct) {
+              score++;
+              questionBlock.innerHTML = `<div class="feedback correct-text">CORRECT</div>`;
+            } else {
+              questionBlock.innerHTML = `<div class="feedback wrong-text">WRONG</div>`;
+            }
+            if (questionsAnswered === selectedQuestions.length) {
+              stopTimer();
+              showResults(selectedQuestions.length);
+            }
+          };
+          questionBlock.appendChild(answerDiv);
+        });
+  
+        quizContainer.appendChild(questionBlock);
+      });
+    }
+  
+    function showResults(totalQuestions) {
+      const resultsContainer = document.getElementById("results-container");
+      resultsContainer.style.display = "block";
+      resultsContainer.innerHTML = `
+        <p>Your Score: ${score}/${totalQuestions}</p>
+        <p>Total Time: ${timeElapsed} seconds</p>
+      `;
+      resultsContainer.scrollIntoView({ behavior: "smooth" });
+    }
+  
+  // Load the quiz everytime a user refreshes 
+    window.onload = renderQuiz;
+  </script>
+
+  <!-- Java Code for Sign Up/Sign In Functions -->
+<script>
+  const signupModal = document.getElementById('signupModal');
+  const signinModal = document.getElementById('signinModal');
+  const messageModal = document.getElementById('messageModal');
+  const messageText = document.getElementById('messageText');
+  const messageOkButton = document.getElementById('messageOkButton');
+
+  document.getElementById('signupBtn').onclick = () => {
+    signupModal.style.display = 'flex';
+  };
+
+  function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+  }
+
+  function closeMessage() {
+    messageModal.style.display = 'none';
+  }
+
+  function showSignIn() {
+    closeModal('signupModal');
+    signinModal.style.display = 'flex';
+  }
+
+  function showSignUp() {
+    closeModal('signinModal');
+    signupModal.style.display = 'flex';
+  }
+
+  function handleSignUp() {
+    const username = document.getElementById('signup-username').value.trim();
+    const password = document.getElementById('signup-password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+
+    const usernameError = document.getElementById('signup-username-error');
+    const passwordError = document.getElementById('signup-password-error');
+    const confirmPasswordError = document.getElementById('confirm-password-error');
+
+    let isValid = true;
+
+    usernameError.textContent = '';
+    passwordError.textContent = '';
+    confirmPasswordError.textContent = '';
+
+    if (!username) {
+      usernameError.textContent = 'Username is required.';
+      isValid = false;
+    }
+
+    if (!password) {
+      passwordError.textContent = 'Password is required.';
+      isValid = false;
+    } else if (password.length < 6) {
+      passwordError.textContent = 'Password must be at least 6 characters.';
+      isValid = false;
+    }
+
+    if (!confirmPassword) {
+      confirmPasswordError.textContent = 'Please confirm your password.';
+      isValid = false;
+    } else if (confirmPassword !== password) {
+      confirmPasswordError.textContent = 'Passwords do not match.';
+      isValid = false;
+    }
+
+    if (isValid) {
+      localStorage.setItem('username', username);
+      localStorage.setItem('password', password);
+      closeModal('signupModal');
+      messageText.textContent = 'You are now signed up! Please sign in.';
+      messageModal.style.display = 'block';
+      messageOkButton.style.display = 'inline-block';
+      messageOkButton.onclick = () => {
+        messageModal.style.display = 'none';
+        signinModal.style.display = 'flex';
+      };
+    }
+  }
+
+  function handleSignIn() {
+    const username = document.getElementById('signin-username').value.trim();
+    const password = document.getElementById('signin-password').value;
+
+    const usernameError = document.getElementById('signin-username-error');
+    const passwordError = document.getElementById('signin-password-error');
+
+    let isValid = true;
+
+    usernameError.textContent = '';
+    passwordError.textContent = '';
+
+    if (!username) {
+      usernameError.textContent = 'Username is required.';
+      isValid = false;
+    }
+
+    if (!password) {
+      passwordError.textContent = 'Password is required.';
+      isValid = false;
+    }
+
+    if (isValid) {
+      const storedUsername = localStorage.getItem('username');
+      const storedPassword = localStorage.getItem('password');
+
+      if (username === storedUsername && password === storedPassword) {
+        closeModal('signinModal');
+        updateNavigation(username);
+        messageText.textContent = `Welcome, ${username}!`;
+        messageModal.style.display = 'block';
+        messageOkButton.style.display = 'none';
+        setTimeout(() => {
+          messageModal.style.display = 'none';
+        }, 2000);
+      } else {
+        messageText.textContent = 'Incorrect username or password!';
+        messageModal.style.display = 'block';
+        messageOkButton.style.display = 'none';
+        setTimeout(() => {
+          messageModal.style.display = 'none';
+        }, 2000);
+      }
+    }
+  }
+
+  function updateNavigation(username) {
+    const signupBtn = document.getElementById('signupBtn');
+    const userMenu = document.getElementById('userMenu');
+    const usernameDisplay = document.getElementById('usernameDisplay');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+
+    signupBtn.style.display = 'none';
+    userMenu.style.display = 'inline-block';
+    usernameDisplay.textContent = username;
+
+    userMenu.onclick = () => {
+      dropdownMenu.style.display = dropdownMenu.style.display === 'flex' ? 'none' : 'flex';
+    };
+
+    window.onclick = (event) => {
+      if (!userMenu.contains(event.target)) {
+        dropdownMenu.style.display = 'none';
+      }
+    };
+  }
+
+  function showAccountInfo() {
+    const username = localStorage.getItem('username');
+    const password = localStorage.getItem('password');
+
+    document.getElementById('accountUsername').textContent = username;
+    document.getElementById('accountPassword').value = password;
+
+    document.getElementById('accountModal').style.display = 'flex';
+  }
+
+  function signOut() {
+    document.getElementById('signupBtn').style.display = 'inline-block';
+    document.getElementById('userMenu').style.display = 'none';
+    document.getElementById('dropdownMenu').style.display = 'none';
+
+    messageText.textContent = 'You have signed out.';
+    messageModal.style.display = 'block';
+    messageOkButton.style.display = 'none';
+
+    setTimeout(() => {
+      messageModal.style.display = 'none';
+    }, 2000);
+  }
+</script>
+  
+  </body>
+  </html>
